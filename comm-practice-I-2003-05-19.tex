@@ -1,0 +1,211 @@
+%#!platex
+\documentclass[a4j,10pt]{jarticle}
+\usepackage{ascmac}
+\begin{document}
+\title{情報通信工学演習I}
+\author{国島丈生}
+\date{2003-05-20}
+\maketitle
+\section{今回の概要}
+\subsection{演習の内容}
+\begin{itemize}
+ \item UNIX(所有者・グループ、権限)
+ \item rm -rf /
+ \item 片付け
+\end{itemize}
+
+\subsection{レポート}
+以下の「演習」のうち「(レポート)」と書かれたものについてまとめよ。提出方
+法は次の通り。
+\begin{itemize}
+ \item レポート内容を{\sffamily \~{}/public\_html/report20030520.html}と
+       いうHTMLファイルにまとめ、次週の演習開始時までに演習室のWWWサーバ
+       に転送しなさい。
+ \item ページの最初に「情報通信工学演習Iレポート課題(2003-05-20分)」と書
+       き({\sffamily h1}エレメントを使用)、その次に自分の名前・学籍番号
+       を書く({\sffamily h2エレメントを使用})こと。
+ \item ページの最後に自分のメールアドレスを書く({\sffamily address}エレ
+       メントを使用)こと。
+\end{itemize}
+
+\section{UNIXにおける権限(パーミッション)}
+\subsection{読み出し権限}
+前回作成した一般ユーザでログインし、以下の演習を行え。
+\begin{itembox}{演習1(前回の演習13と同内容)}
+ {\sffamily /usr/bin}というディレクトリに置かれているファイルの一覧を
+ {\sffamily \~{}/usrbinlist}というファイルに書き出せ。このファイルの内容
+ を{\sffamily more}を用いて表示させよ。
+\end{itembox}
+\begin{itembox}{演習2(レポート)}
+ {\sffamily \~{}{\slash}usrbinlist}のパーミッションはどのようになっているか。
+ どのようにして調べたか。
+\end{itembox}
+\begin{itembox}{演習3(レポート)}
+ {\sffamily \~{}{\slash}usrbinlist}を、すべてのユーザ(所有者を含む)から読
+ み出しができないようにパーミッションを変更せよ。その方法を示せ。
+\end{itembox}
+\begin{itembox}{演習4(レポート)}
+ 現在の{\sffamily \~{}{\slash}usrbinlist}の内容を{\sffamily more}で表示し
+ ようとすると何が起こるか示せ。
+\end{itembox}
+\begin{itembox}{演習5}
+ {\sffamily \~{}{\slash}usrbinlist}のパーミッションを、現在の状態から所有
+ 者のみ読み出しができるように変更せよ。
+\end{itembox}
+\begin{itembox}{演習6(レポート)}
+ 現在の{\sffamily \~{}{\slash}usrbinlist}の内容を{\sffamily more}で表示し
+ ようとすると何が起こるか示せ。
+\end{itembox}
+
+\subsection{ユーザと権限}
+ここまでとは別の一般ユーザでログインしなおし、引き続き以下の演習を行え。
+\begin{itembox}{演習7}
+ 演習1から演習6までを行ったユーザのホームディレクトリに移動せよ。
+\end{itembox}
+\begin{itembox}{演習8(レポート)}
+ {\sffamily groups}というコマンドを実行し、今ログインしているユーザがど
+ のグループに属しているか調べよ。
+\end{itembox}
+\begin{itembox}{演習9(レポート)}
+ 演習8のディレクトリにある{\sffamily usrbinlist}の内容を{\sffamily more} 
+ で表示しようとすると何が起こるか示せ。なぜこのようなことが起きるのか、
+ 理由を述べよ。
+\end{itembox}
+\begin{itembox}{演習10(レポート)}
+ 演習10のディレクトリにある{\sffamily usrbinlist}のパーミッションを、す
+ べてのユーザから読み出し可能にしようと試みよ。何が起こったか。パーミッ
+ ションはどうなったか。
+\end{itembox}
+
+\subsection{特権ユーザroot}
+次にrootというユーザでログインしなおし、引き続き以下の演習を行え。
+\begin{itembox}{演習11}
+ 演習1から演習6までを行ったユーザのホームディレクトリに移動せよ。
+\end{itembox}
+\begin{itembox}{演習12(レポート)}
+ {\sffamily groups}というコマンドを実行し、今ログインしているユーザがど
+ のグループに属しているか調べよ。
+\end{itembox}
+\begin{itembox}{演習13(レポート)}
+ 演習11のディレクトリにある{\sffamily usrbinlist}の内容を{\sffamily more} 
+ で表示しようとすると何が起こるか示せ。
+\end{itembox}
+\begin{itembox}{演習14(レポート)}
+ 演習11のディレクトリにある{\sffamily usrbinlist}のパーミッションを、す
+ べてのユーザから読み出し可能にしようと試みよ。何が起こったか。パーミッ
+ ションはどうなったか。
+\end{itembox}
+
+\subsection{実行権限}
+あらためて一般ユーザでログインし、次の演習を行え。
+\begin{itembox}{演習15}
+ {\sffamily emacs}で次のような内容のファイルを作成し、{\sffamily
+ lsbackup}という名前で保存せよ。これは、{\sffamily emacs}でファイルを編
+ 集したときに自動的にできるバックアップファイル(ファイルの末尾に
+ {\sffamily \~{}}がついたファイル)の一覧を出力するものである。
+ \begin{quote}
+  {\sffamily \#!/bin/sh}\\
+  {\sffamily ls *\~{}}
+ \end{quote}
+\end{itembox}
+
+ここで作成した{\sffamily lsbackup}は{\bfseries シェルスクリプト}と呼ばれ、
+2行目以降に書かれたコマンドを連続して実行することを示す。いわば、UNIXの
+コマンドを使って、ある種のプログラムを記述しているものだとみなすことがで
+きる。本演習では簡単なものしか紹介しないが、かなり複雑な処理も記述するこ
+とができるので、興味のあるかたは自習されたい。
+
+いったん作成したシェルスクリプトは、{\sffamily ls}などのシステム標準のコ
+マンドと同様に、コマンドとして実行することができる。ただし、実行するには、
+そのシェルスクリプトに実行権限を与えておく必要がある。
+
+\begin{itembox}{演習16(レポート)}
+ {\sffamily \~{}{\slash}public\_html}というディレクトリに移動し、演習15 
+ で作成した{\sffamily lsbackup}を実行してみよ。実行は、ターミナルエミュ
+ レータ上で次のようにする(\% はプロンプトであることに注意)。何が起こった
+ か。
+ \begin{quote}
+  {\sffamily \% \~{}{\slash}lsbackup}
+ \end{quote}
+\end{itembox}
+\begin{itembox}{演習17}
+ {\sffamily \~{}{\slash}lsbackup}のパーミッションを調べよ。
+\end{itembox}
+\begin{itembox}{演習18}
+ {\sffamily \~{}{\slash}lsbackup}に対して、誰でも実行できるようにパーミッ
+ ションを変更せよ。
+\end{itembox}
+\begin{itembox}{演習19(レポート)}
+ {\sffamily \~{}{\slash}public\_html}というディレクトリに移動し、演習15 
+ で作成した{\sffamily lsbackup}を実行してみよ。結果を示せ。
+\end{itembox}
+
+シェルスクリプトの応用として、\LaTeX を実行したときに作成される
+{\sffamily *.dvi, *.aux, *.log}ファイルをまとめて消去する、といったもの
+が考えられる。ここまでの演習の知識で作成することができるので、興味のある
+方は試みられたい。
+
+\section{rm -rf /}
+ユーザrootで ``rm -rf {\slash}'' を実行する実験を行う。
+
+このコマンドの意味は「{\sffamily {\slash}}というディレクトリを、その中に
+あるファイルやディレクトリも含めてすべて({\sffamily -r}オプション)、強制
+的に({\sffamily -f}オプション)消去せよ」ということである。
+
+UNIXのファイルシステムは{\slash}からはじまる木構造になっている。また、
+rootは強力な権限を持つユーザであり、すべてのファイルやディレクトリを変更・
+上書き・消去できる権限を持つ。一方、UNIXでは、今実行しようとするrmや、各
+種daemonプログラム、またUNIXの実行の核であるカーネル(kernel)とよばれる実
+行ファイルもすべて、一つのファイルとして存在している。
+
+したがって、この実験の目的は、「UNIXで、現在実行中のプログラムのファイル
+を消去しようとすると何が起こるか確かめる」と言い換えることができる。
+
+\begin{itembox}{演習20(レポート)}
+この実験について、以下の内容をまとめ報告せよ。
+\begin{enumerate}
+ \item 実験結果の予想。かならず実験を始める前に各自で結果の予想を立てよ。
+ \item 実験結果の報告。(途中での試行結果、最後にどうなったか)
+ \item 実験結果の考察。予想と合っていたかどうか、なぜこのような結果が出
+       て、自分の予想はどこが違っていたのか、など。
+\end{enumerate}
+実際に何が起こるか、結果を記したWWWページがある(URLは演習中に指示)。この
+ページを見たり、書籍を参照するなどしてまとめること。
+\end{itembox}
+
+\begin{screen}
+ {\bfseries 以降の手順を始めると、システムは復旧できなくなる。レポートを
+ 作成するのに必要な資料・データが得られているか、充分確認すること。}
+
+ ユーザrootでログインし、{\sffamily emacs}、{\sffamily mozilla}、ターミ
+ ナルエミュレータを1つずつ起動しておく。ターミナルエミュレータ上で、以下
+ のコマンドを実行する(\# はプロンプトであることに注意)。最後の \& を忘れ
+ ないこと。\\
+ {\sffamily \# rm -rf / \&}
+
+ 結果が出るまでにかなりの時間がかかる。その間に、次のようなことを試せ。
+ \begin{itemize}
+  \item {\sffamily {\slash}usr{\slash}bin{\slash}emacs}, {\sffamily
+	{\slash}usr{\slash}bin{\slash}mozilla}が存在するか、{\sffamily
+	ls}を用いてチェックせよ。
+  \item {\sffamily {\slash}usr{\slash}bin{\slash}emacs}がなくなった後、
+	emacsが新たに起動できるか。
+  \item {\sffamily {\slash}usr{\slash}bin{\slash}emacs}がなくなった後、
+	あらかじめ起動しておいた emacs でファイルが新たに作成できるか。
+  \item {\sffamily {\slash}usr{\slash}bin{\slash}mozilla}がなくなった後、
+	mozillaが新たに起動できるか。
+  \item {\sffamily {\slash}usr{\slash}bin{\slash}mozilla}がなくなった後、
+	あらかじめ起動しておいた mozilla で WWW が閲覧できるか。
+ \end{itemize}
+
+ 実行中はハードディスクへのアクセスランプが激しく点灯する。点灯が終わっ
+ たら実行が終了したと考えてよい。
+\end{screen}
+
+\section{片付け}
+
+次のグループの実験のために、組み立てたPCを元の状態に分解し、片付ける。部
+品を壊さないよう、丁寧に扱うこと。また、元の箱・袋に入っているか、ケース
+のネジの締め忘れがないか、などにも注意しておく。
+
+\end{document}

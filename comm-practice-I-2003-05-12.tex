@@ -1,0 +1,315 @@
+%#!platex
+\documentclass[a4j,10pt]{jarticle}
+\usepackage{ascmac}
+\begin{document}
+\title{情報通信工学演習I}
+\author{国島丈生}
+\date{2003-05-13}
+\maketitle
+
+\section{今回の概要}
+\subsection{演習の内容}
+\begin{itemize}
+ \item UNIX(Linux)利用の準備
+ \item HTML(Hypertext Markup Language)
+\end{itemize}
+
+\subsection{レポート}
+以下の「演習」のうち「(レポート)」と書かれたものについてまとめよ。提出方
+法は次の通り。
+\begin{itemize}
+ \item レポート内容を{\sffamily \~{}/public\_html/report20030513.html}と
+       いうHTMLファイルにまとめ、次週の演習開始時までに演習室のWWWサーバ
+       に転送しなさい。
+ \item ページの最初に「情報通信工学演習Iレポート課題(2003-05-13分)」と書
+       き({\sffamily h1}エレメントを使用)、その次に自分の名前・学籍番号
+       を書く({\sffamily h2エレメントを使用})こと。
+ \item ページの最後に自分のメールアドレスを書く({\sffamily address}エレ
+       メントを使用)こと。
+\end{itemize}
+
+\clearpage
+
+\section{UNIX利用の準備}
+
+前回の演習でLinuxのインストールが完了し、日本語環境も含め、利用可能な状
+態になっている。ただし、前回の演習では、各班のユーザ名の割り当てができて
+いない。まずこの作業を各班で行い、各自が自分の班のPC(Linux)にログインで
+きるようにする。
+
+\subsection{予備知識: rootというユーザ}
+
+前回の演習の最後に、Vine Linuxが正しくインストールできたかどうかの確認と
+して、root というユーザでログインした。このユーザはUNIXのシステム管理者
+のためのもので、そのコンピュータ上でならどんなことでも行える。操作によっ
+ては、UNIXを立ちあがらなくしてしまうことも可能である。
+
+そのため、root での作業は必要最低限にとどめ、普段はより権限の低い(できる
+ことの少ない)ユーザで作業をすることとする。
+
+\subsection{新しいユーザの作りかた}
+
+{\sffamily c15001}というユーザを作る例を図\ref{fig:useradd}に示す。(ゴシッ
+ク体は入力するコマンドを、斜字体はシステムからのメッセージを表す。)
+
+\begin{figure}[htbp]
+\begin{screen}
+ root でログインし、画面下の端末のアイコンをクリックしてターミナルエミュ
+ レータを実行する。そのターミナルエミュレータの上で以下のコマンドを実行す
+ る(\#はプロンプトであることに注意)。\\
+ {\sffamily \# useradd c15001}\\
+ {\sffamily \# passwd c15001}\\
+ {\itshape Changing password for user c15001}\\
+ {\itshape New password:} (パスワードとして設定したい文字列を入力)\\
+ {\itshape Retype new password:} (上と同じ文字列を入力)\\
+ {\itshape passwd: all authentication tokens updated successfully}\\
+ {\sffamily \#}
+\end{screen}
+\caption{ユーザc15001の作成例}\label{fig:useradd}
+\end{figure}
+
+\begin{itembox}{演習1}
+ 図\ref{fig:useradd}と同様の手順によって、各自、演習室と同じユーザを作成し、
+ パスワードを設定せよ。一通り終わった後、ログインできることを各自確かめ
+ よ。
+
+ パスワードとして設定したい文字列が短すぎたり単純すぎたりすると、システ
+ ムから{\itshape BAD PASSWORD}と言われて拒否されることがある。その場合は、
+ メッセージの英語をよく読んで、適切な文字列に直すこと。また、演習室で設
+ 定したパスワードとは異なるものにすること。
+\end{itembox}
+
+\subsection{ホームディレクトリのパーミッション設定}
+以下の演習では、ユーザのホームディレクトリが誰にでも読めるようになってい
+なければならない。しかし、図\ref{fig:useradd}のようにユーザを作成すると、
+この条件を満たさない。
+\begin{itembox}{演習2(レポート)}
+ 第1〜3週のテキスト4.2節を参考にして、ホームディレクトリのパーミッション
+ が現在どのようになっているか調べよ(結果をレポートにまとめよ)。
+
+ その後、4.7節を参考にして、ホームディレクトリのパーミッションを、「所有
+ 者に対して読み出し・書きこみ・実行、グループに対して読み出し・実行、そ
+ の他のユーザに対して書きこみ・実行」ができるように変更せよ(実行手順をレ
+ ポートにまとめよ)。
+\end{itembox}
+
+\subsection{コンピュータの停止、再起動}
+Vine LinuxやSolarisを始めとするUNIXは「マルチタスク・オペレーティングシ
+ステム」と呼ばれ、ユーザが誰もログインしていなくても、いくつものプログラ
+ムが動作している\footnote{Windows 2000/XPやMacOS XもマルチタスクOSである。}。
+
+コンピュータを停止させたり再起動させたりする場合、動作しているプログラム
+を正しく終了させる必要がある。いきなり電源スイッチを切ったりすると、最悪
+の場合、次回起動時にOSが立ちあがらなくなる可能性もある。
+
+\begin{screen}
+ Vine Linuxの停止・再起動の手順(ログインしているとき)
+ \begin{enumerate}
+  \item 「デスクトップ」メニューの「ログアウト」を選択。
+  \item 「アクション」の中から適切な項目を選択したのち「はい」をクリック。
+ \end{enumerate}
+ Vine Linuxの停止・再起動の手順(ログインしていないとき)
+ \begin{enumerate}
+  \item 「オプション」メニューの中から適切な項目を選択。
+ \end{enumerate}
+\end{screen}
+\begin{itembox}{演習3}
+ 上記の手順に基づいて、コンピュータを再起動してみよ。
+\end{itembox}
+
+\section{HTML}
+HTMLでウェブページを作成し、公開する演習を行う(第1〜3週テキスト7.3・7.4
+節)。
+
+\begin{itembox}{演習4}
+ 各班のうち誰か一人が代表して自班の Linux にログインし、ターミナルエミュ
+ レータとEmacsを一つずつ実行させよ。ターミナルエミュレータでさまざまなコ
+ マンドが入力できるよう、Emacsを実行させるときに ``emacs \&''と\& をつけ
+ ることを忘れないこと。
+\end{itembox}
+\begin{itembox}{演習5}
+ 演習4で実行させた Emacs を用いて、図\ref{fig:template.html}のHTMLファイ
+ ル(template.html)をホームディレクトリに作成せよ。
+\end{itembox}
+\begin{figure}[htbp]
+ \begin{verbatim}
+<html>
+<head>
+<title></title>
+</head>
+<body>
+</body>
+</html>
+ \end{verbatim}
+ \caption{HTMLのひながた}
+ \label{fig:template.html}
+\end{figure}
+\begin{itembox}{演習6}
+ 演習5で作成したtemplate.htmlをコピーして {\sffamily
+ \~{}/public\_html/index.html} を作成せよ。必要なら {\sffamily
+ \~{}/public\_html}というディレクトリを作成し、「所有者は読み出し・書きこ
+ み・実行が可能、グループは読み出し・実行が可能、その他のユーザは読み出し・
+ 実行が可能」というようにパーミッションを設定すること。
+\end{itembox}
+\begin{itembox}{演習7}
+ 演習6で作成した{\sffamily \~{}/public\_html/index.html}を演習4で実行させ
+ た Emacs で開き、次の手順で編集せよ。
+ \begin{enumerate}
+  \item タイトルを「演習テストページ」と設定する。
+  \item 本文の先頭に「演習テストページ」という大見出し({\sffamily h1}エレ
+	メント)を書く。
+  \item 大見出しの次に今日の日付を小見出し({\sffamily h2}エレメント)で書く。
+  \item 小見出しの次に、「これは情報通信工学科の情報通信工学演習Iで作った
+	テストページです。」という本文を、段落区切りを入れて書く。
+  \item 班のメンバーの名前を箇条書きにして書く。
+  \item 次に区切り線(横線)を書く。
+  \item 最後に自分の名前とメールアドレスを書く({\sffamily address}エレメ
+	ント)。
+  \item 本文中の「情報通信工学科」というところに、{\sffamily
+	http://www.c.oka-pu.ac.jp/}というURLへのリンクを設定する。
+ \end{enumerate}
+\end{itembox}
+
+Vine Linux では、{\sffamily mozilla}というWWWブラウザ\footnote{演習室の 
+Netscape とほぼ同じものである。}が用意されている。
+\begin{itembox}{演習7'}
+編集ができたら、{\sffamily mozilla}で見え方を確認せよ。
+\begin{enumerate}
+ \item ターミナルエミュレータで{\sffamily mozilla \&}と実行する。
+ \item 実行されたWWWブラウザで、「ファイル」メニューの「ファイルを開く」
+       を選択し、演習6で編集した{\sffamily index.html}を選択する。
+\end{enumerate}
+\end{itembox}
+
+HTMLに関して、いくつか補足をしておく。
+\begin{itemize}
+ \item 本文中に $<$, $>$, \&という記号を書きたいときは、エレメントその他の記
+       号と区別するために、それぞれ\&lt;, \&gt;, \&amp; と書く。 
+ \item エレメントの開始タグ({\sffamily $<$p$>$}など)と終了タグ
+       ({\sffamily $<$/p$>$}など)の対応関係が正しくとれていなければなら
+       ない。{\sffamily $<$p$><$pre$><$/p$><$/pre$>$}のように、重なりが
+       あってはいけない。
+ \item エレメントの中に別のエレメントを入れてもよいが、入れられるエレメ
+       ントには制限がある。たとえば{\sffamily p}エレメントの中には、表
+       7.1のエレメントのうち''Anchors''と''Image''以外のエレメントは入れ
+       ることができない。詳細は解説書などを参照されたい。
+ \item リンクを設定する場合、URLには {\sffamily http://}で始まるもののほ
+       か、そのファイルからの相対パスを指定することもできる。もちろん、
+       リンク先のファイルが正しい位置に置かれていなければならない。
+ \item WWWブラウザによって必ず見えかたが異なるので、あまり見栄えの詳細に
+       こだわらないほうがよい。
+\end{itemize}
+
+\subsection{HTMLページの公開}
+WWWのページを外部に公開するには、WWWサーバと呼ばれるプログラムが実行して
+いなければならない(7.1.1節参照)。演習室では www-class.c.oka-pu.ac.jp と
+いうコンピュータでWWWサーバが実行されており、7.3.3節にある通り、HTMLペー
+ジを外部に公開するにはこのサーバにファイルを転送しなければならない。
+
+しかし、今回インストールした Vine Linux では WWW サーバが含まれており、
+各班のコンピュータで WWW サーバが実行されている\footnote{演習のためにあ
+えてこうしてあるが、本来は好ましいことではない。}。したがって、
+{\sffamily \~{}/public\_html/}にファイルを置いただけで外部に公開されたこ
+とになる。
+
+\begin{itembox}{演習8}
+ mozillaで{\sffamily http://localhost/\~{}c15????/index.html}を開き、演
+ 習7と見え方が同じであることを確認せよ\footnote{localhostとは、その計算
+ 機自身を表す名前である。}。({\sffamily c15????}は{\sffamily index.html}
+ を作成したユーザ名)
+\end{itembox}
+\begin{itembox}{演習9(レポート)}
+ {\sffamily index.html}を作成していないユーザについて、mozillaで
+ {\sffamily http://localhost/\~{}c15????/index.html}を開くと、どのような
+ メッセージが表示されるか。
+\end{itembox}
+
+\section{UNIXでのファイル操作}
+UNIXには第1〜3週で学んだもの以外に多くのコマンドがあり、これらを組み合わ
+せることでさまざまなことができるようになっている。ここでは、第1〜3週で学
+んだコマンドなどを用いて、具体的なファイル操作を考えることを行う。
+
+\subsection{前回までの復習}
+\begin{itembox}{演習10}
+ ホームディレクトリにあるファイル・ディレクトリの一覧を表示するにはどの
+ ようなコマンドを実行すればよいか。{\sffamily /bin}というディレクトリに
+ あるファイル・ディレクトリの一覧を表示するにはどうすればよいか。
+\end{itembox}
+\begin{itembox}{演習11(レポート)}
+ {\sffamily /etc}というディレクトリに置かれているファイルのうち、
+ {\sffamily .conf}という文字列で終わるファイルの一覧を表示したい。どのよ
+ うなコマンドを実行すればよいか。また、Vine Linux で実行した結果を示せ。
+\end{itembox}
+\begin{itembox}{演習12(レポート)}
+ 演習11の表示結果を{\sffamily \~{}/conflist}というファイルに書き出したい。
+ どのようなコマンドを実行すればよいか示せ。
+\end{itembox}
+\begin{itembox}{演習13}
+ {\sffamily /usr/bin}というディレクトリに置かれているファイルの一覧を
+ {\sffamily \~{}/usrbinlist}というファイルに書き出せ。このファイルの内容
+ を{\sffamily more}を用いて表示させ、aで始まるファイルの数を数えよ。
+\end{itembox}
+\begin{itembox}{演習14(レポート)}
+ 演習13と同様の作業を、一覧をファイルに書き出すことなく行え。どのような
+ コマンドを実行すればよいか。(ヒント: 第1〜3週テキスト3.4節参照)
+\end{itembox}
+\begin{itembox}{演習15(レポート)}
+ 「{\sffamily /usr/bin}というディレクトリに置かれていて、aで始まるファイ
+ ルの一覧の表示」を、一つのコマンドだけで実行せよ。
+\end{itembox}
+\subsection{wc}
+\begin{itembox}{演習16}
+ {\sffamily wc}というコマンドがどのようなものであるか、オンラインマニュ
+ アルで調べよ。Vine Linux では{\sffamily jman}というコマンドで日本語マニュ
+ アルが参照できる。
+\end{itembox}
+\begin{itembox}{演習17}
+ 演習6で作成した{\sffamily index.html}の行数を求めるコマンドを示せ。
+\end{itembox}
+\begin{itembox}{演習18(レポート)}
+ 「{\sffamily /usr/bin}というディレクトリに置かれていて、aで始まるファイ
+ ルの数」を求めるには、どのようなコマンドを実行すればよいか。
+\end{itembox}
+\subsection{grep}
+\begin{itembox}{演習19}
+ {\sffamily grep}とはどのようなコマンドであるか、オンラインマニュアルで
+ 調べよ。
+\end{itembox}
+\begin{itembox}{演習20}
+ 演習13で作成した{\sffamily \~{}/usrbinlist}のうち、``mozilla''という文
+ 字列が含まれている行だけを出力するコマンドを示せ。
+\end{itembox}
+\begin{itembox}{演習21(レポート)}
+ {\sffamily /usr/bin}というディレクトリに置かれていて、``emacs''という文
+ 字列を含むファイルの{\bfseries 一覧}を出力するコマンドを示せ。作業ファ
+ イルを作らない方法を考えること。
+\end{itembox}
+\begin{itembox}{演習22(レポート)}
+ {\sffamily /usr/bin}というディレクトリに置かれていて、``emacs''という文
+ 字列を含むファイルの{\bfseries 数}を出力するコマンドを示せ。作業ファイ
+ ルを作らない方法を考えること。
+\end{itembox}
+\subsection{sort}
+\begin{itembox}{演習23}
+ {\sffamily sort}とはどういうコマンドであるか、オンラインマニュアルで調
+ べよ。
+\end{itembox}
+\begin{itembox}{演習24}
+ {\sffamily /etc}に置かれているファイルのうち、{\sffamily .conf}という文
+ 字列で終わるものについて、ファイル名と文字数の一覧を出力するコマンドを
+ 示せ。(ヒント: {\sffamily wc}を使う。出力形式は{\sffamily wc}の出力その
+ ままでよい。また全ファイルの合計文字数が表示されてもかまわない)
+\end{itembox}
+\begin{itembox}{演習25(レポート)}
+ 演習24の結果を、文字数が小さい順に整列して表示する方法を示せ。作業ファ
+ イルを作らないこと。
+\end{itembox}
+\begin{itembox}{演習26(レポート)}
+ 演習24の結果を、文字数が大きい順に整列して表示する方法を示せ。作業ファ
+ イルを作らないこと。また、全ファイルの合計文字数が一番最初に表示されて
+ もかまわない。
+\end{itembox}
+\section{残り時間について}
+演習時間が残った場合は、演習4〜7を可能な限りすべてのメンバーが行うように
+すること。
+\end{document}
